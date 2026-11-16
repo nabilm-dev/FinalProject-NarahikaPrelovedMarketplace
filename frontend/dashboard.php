@@ -22,6 +22,8 @@ $adalahPenjual = $sudahLogin && $role === "seller";
         <a href="pages/seller/jadi_penjual.php">Jadi Penjual</a> |
       <?php endif; ?>
       <?php if ($sudahLogin): ?>
+        <a href="pages/profil/profil_<?= $adalahPenjual ? "penjual" : "pembeli" ?>.php">Profil</a> |
+        <a href="pages/profil/riwayat.php">Riwayat</a> |
         Halo, <?= htmlspecialchars($_SESSION["nama"]) ?>
         <small>(<?= $adalahPenjual ? "Penjual" : "Pembeli" ?>)</small>
         <a href="../backend/auth/logout.php"><button type="button">Keluar</button></a>
