@@ -4,13 +4,27 @@ $sudahLogin    = isset($_SESSION["user_id"]);
 $role          = $_SESSION["role"] ?? "buyer";
 $adalahPenjual = $sudahLogin && $role === "seller";
 
-$semuaProduk = require __DIR__ . "/../../data/produk.php";
+require_once __DIR__ . "/../../data/produk.php";
+require_once __DIR__ . "/../../data/keranjang.php";
 
-// --- Aksi hapus dari wishlist ---
-if ($_SERVER["REQUEST_METHOD"] === "POST" && ($_POST["aksi"] ?? "") === "wishlist") {
-    toggleWishlist((int) ($_POST["id"] ?? 0));
-    header("Location: wishlist.php");
-    exit;
+$semuaProduk = daftarProduk();
+
+// --- Aksi wishlist ---
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $aksi = $_POST["aksi"] ?? "";
+    $id   = (int) ($_POST["id"] ?? 0);
+
+    if ($aksi === "wishlist") {
+        toggleWishlist($id);
+        header("Location: wishlist.php");
+        exit;
+    }
+
+    if ($aksi === "cart") {
+        keranjangTambah($id, 1);
+        header("Location: ../keranjang/keranjang.php");
+        exit;
+    }
 }
 
 $idWishlist = $_SESSION["wishlist"] ?? [];
@@ -26,6 +40,7 @@ foreach ($idWishlist as $id) {
 }
 
 $jumlahWishlist = count($produkWishlist);
+$jumlahKeranjang = keranjangJumlahQty();
 ?>
 <!doctype html>
 <html lang="id">
@@ -40,6 +55,7 @@ $jumlahWishlist = count($produkWishlist);
         <strong>Narahika</strong> |
         <a href="../../dashboard.php">Dashboard</a> |
         <a href="katalog.php">Katalog</a> |
+        <a href="../keranjang/keranjang.php">Keranjang (<?= $jumlahKeranjang ?>)</a> |
         <a href="wishlist.php">Wishlist (<?= $jumlahWishlist ?>)</a> |
         <?php if ($adalahPenjual): ?>
           <a href="posting_barang.php">Jual Barang</a> |
@@ -113,7 +129,11 @@ $jumlahWishlist = count($produkWishlist);
                 <button type="button">Lihat Detail</button>
               </a>
 
-              <button type="button" disabled>Pindah ke Keranjang</button>
+              <form action="wishlist.php" method="POST">
+                <input type="hidden" name="aksi" value="cart" />
+                <input type="hidden" name="id" value="<?= (int) $produk["id"] ?>" />
+                <button type="submit">Pindah ke Keranjang</button>
+              </form>
 
               <form action="wishlist.php" method="POST">
                 <input type="hidden" name="aksi" value="wishlist" />

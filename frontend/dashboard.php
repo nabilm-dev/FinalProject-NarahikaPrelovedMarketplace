@@ -17,6 +17,7 @@ $adalahPenjual = $sudahLogin && $role === "seller";
     <nav>
       <strong>Narahika</strong> |
       <a href="pages/produk/katalog.php">Katalog</a> |
+      <a href="pages/keranjang/keranjang.php">Keranjang</a> |
       <?php if ($adalahPenjual): ?>
         <a href="pages/produk/posting_barang.php">Jual Barang</a> |
       <?php elseif ($sudahLogin): ?>

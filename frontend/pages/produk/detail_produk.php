@@ -4,19 +4,30 @@ $sudahLogin    = isset($_SESSION["user_id"]);
 $role          = $_SESSION["role"] ?? "buyer";
 $adalahPenjual = $sudahLogin && $role === "seller";
 
-$semuaProduk = require __DIR__ . "/../../data/produk.php";
+require_once __DIR__ . "/../../data/produk.php";
+require_once __DIR__ . "/../../data/keranjang.php";
+
+$semuaProduk = daftarProduk();
 
 $id = (int) ($_GET["id"] ?? 0);
 $produk = produkById($semuaProduk, $id);
 
-// --- Aksi wishlist (POST, lalu redirect) ---
-if ($produk !== null && $_SERVER["REQUEST_METHOD"] === "POST" && ($_POST["aksi"] ?? "") === "wishlist") {
-    toggleWishlist($id);
+// --- Aksi wishlist / keranjang (POST, lalu redirect) ---
+if ($produk !== null && $_SERVER["REQUEST_METHOD"] === "POST") {
+    $aksi = $_POST["aksi"] ?? "";
+
+    if ($aksi === "wishlist") {
+        toggleWishlist($id);
+    } elseif ($aksi === "cart") {
+        keranjangTambah($id, (int) ($_POST["qty"] ?? 1));
+    }
+
     header("Location: " . $_SERVER["REQUEST_URI"]);
     exit;
 }
 
-$jumlahWishlist = count($_SESSION["wishlist"] ?? []);
+$jumlahWishlist  = count($_SESSION["wishlist"] ?? []);
+$jumlahKeranjang = keranjangJumlahQty();
 
 // Foto aktif (ilustrasi galeri)
 $jumlahFoto = $produk !== null ? max(1, (int) $produk["foto"]) : 1;
@@ -49,6 +60,7 @@ if ($produk !== null) {
         <strong>Narahika</strong> |
         <a href="../../dashboard.php">Dashboard</a> |
         <a href="katalog.php">Katalog</a> |
+        <a href="../keranjang/keranjang.php">Keranjang (<?= $jumlahKeranjang ?>)</a> |
         <a href="wishlist.php">Wishlist (<?= $jumlahWishlist ?>)</a> |
         <?php if ($adalahPenjual): ?>
           <a href="posting_barang.php">Jual Barang</a> |
@@ -165,12 +177,23 @@ if ($produk !== null) {
           </div>
 
           <div>
-            <button type="button" disabled>Tambah ke Keranjang</button>
-            <button type="button" disabled>Beli Sekarang</button>
+            <form action="<?= htmlspecialchars($_SERVER["REQUEST_URI"]) ?>" method="POST">
+              <input type="hidden" name="aksi" value="cart" />
+              <input type="hidden" name="id" value="<?= (int) $produk["id"] ?>" />
+
+              <label for="qty">Jumlah:</label>
+              <input type="number" id="qty" name="qty" value="1" min="1" max="99" />
+              <button type="submit">+ Tambah ke Keranjang</button>
+            </form>
+
+            <a href="../keranjang/keranjang.php"><button type="button">Lihat Keranjang</button></a>
           </div>
           <p>
             <small>
-              <em>Tombol keranjang &amp; beli aktif setelah fitur keranjang-checkout dibuat.</em>
+              <em>
+                Beli Sekarang digabung ke alur keranjang-checkout: tambah ke keranjang,
+                lalu lanjut checkout.
+              </em>
             </small>
           </p>
         </section>
