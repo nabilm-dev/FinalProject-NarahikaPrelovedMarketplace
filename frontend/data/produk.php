@@ -1,29 +1,4 @@
 <?php
-/**
- * Data produk.
- *
- * SEMENTARA KOSONG — silakan isi sendiri di array paling bawah.
- * Format satu produk (salin blok ini, hapus tanda //):
- *
- * [
- *     "id"          => 1,
- *     "judul"       => "Jaket Denim Levi's Original",
- *     "kategori"    => "Outerwear",           // Atasan|Bawahan|Dress|Outerwear|Sepatu|Tas|Aksesoris|Lainnya
- *     "ukuran"      => "M",                   // XS|S|M|L|XL|XXL|All Size|nomor sepatu
- *     "kondisi"     => "Bekas Baik",          // Like New|Bekas Baik|Ada Minus
- *     "harga"       => 185000,
- *     "lokasi"      => "Bandung, Jawa Barat",
- *     "toko"        => "Narahika Vintage",
- *     "rating_toko" => 4.8,
- *     "ulasan_toko" => 32,
- *     "berat"       => 900,                   // gram
- *     "bisa_nego"   => true,
- *     "metode"      => "Kirim & COD",         // Kirim|COD|Kirim & COD
- *     "tanggal"     => "2026-11-12",          // YYYY-MM-DD, dipakai untuk urutan Terbaru
- *     "foto"        => 4,                     // jumlah foto (ilustrasi galeri)
- *     "deskripsi"   => "Deskripsi barang, termasuk minus kalau ada.",
- * ],
- */
 
 function rupiah(int $angka): string
 {
@@ -125,7 +100,9 @@ function toggleWishlist(int $id): void
     }
 }
 
-return [
+function daftarProduk(): array
+{
+    return [
     // CONTOH — ganti/hapus setelah kamu isi produk sendiri.
     [
         "id"          => 1,
@@ -145,4 +122,5 @@ return [
         "foto"        => 4,
         "deskripsi"   => "Levi's vintage original, bahan tebal dan masih kokoh. Ada sedikit fading wajar di bagian siku, tidak ada sobek atau bolong. Sudah dicuci bersih.",
     ],
-];
+    ];
+}
