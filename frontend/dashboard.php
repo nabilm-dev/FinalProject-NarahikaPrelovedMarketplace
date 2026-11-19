@@ -16,12 +16,14 @@ $adalahPenjual = $sudahLogin && $role === "seller";
   <header>
     <nav>
       <strong>Narahika</strong> |
+      <a href="pages/produk/katalog.php">Katalog</a> |
       <?php if ($adalahPenjual): ?>
         <a href="pages/produk/posting_barang.php">Jual Barang</a> |
       <?php elseif ($sudahLogin): ?>
         <a href="pages/seller/jadi_penjual.php">Jadi Penjual</a> |
       <?php endif; ?>
       <?php if ($sudahLogin): ?>
+        <a href="pages/produk/wishlist.php">Wishlist</a> |
         <a href="pages/profil/profil_<?= $adalahPenjual ? "penjual" : "pembeli" ?>.php">Profil</a> |
         <a href="pages/profil/riwayat.php">Riwayat</a> |
         Halo, <?= htmlspecialchars($_SESSION["nama"]) ?>
@@ -55,6 +57,17 @@ $adalahPenjual = $sudahLogin && $role === "seller";
         </a>
         <a href="pages/auth/form_daftar.php">
           <button type="button">Daftar</button>
+        </a>
+      <?php endif; ?>
+    </p>
+
+    <p>
+      <a href="pages/produk/katalog.php">
+        <button type="button">Lihat Katalog Produk</button>
+      </a>
+      <?php if ($sudahLogin): ?>
+        <a href="pages/produk/wishlist.php">
+          <button type="button">Wishlist Saya</button>
         </a>
       <?php endif; ?>
     </p>
