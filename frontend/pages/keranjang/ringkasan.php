@@ -160,7 +160,7 @@ $jumlahNav = keranjangJumlahQty();
         <hr />
 
         <div>
-          <button type="button" disabled>Lanjut ke Pembayaran</button>
+          <a href="../pembayaran/pembayaran.php"><button type="button">Lanjut ke Pembayaran</button></a>
           <a href="../profil/riwayat.php"><button type="button">Lihat Riwayat Pesanan</button></a>
           <a href="../produk/katalog.php"><button type="button">Belanja Lagi</button></a>
         </div>
@@ -168,8 +168,8 @@ $jumlahNav = keranjangJumlahQty();
         <p>
           <small>
             <em>
-              Pembayaran sungguhan (QRIS / e-wallet / rekening bersama) dibuat di tahap
-              pembayaran-escrow. Sekarang pesanan hanya tersimpan di sesi demo.
+              Pembayaran masih simulasi (QRIS / e-wallet / rekening bersama) dan data pesanan
+              tersimpan di sesi browser. Nanti dipindah ke tabel database.
             </em>
           </small>
         </p>
